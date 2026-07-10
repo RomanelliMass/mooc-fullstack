@@ -8,11 +8,27 @@ const Title = ({title}) => {
   )
 }
 
-const Button = (props) => {
+const Button = ({ onClick, text }) => {
   return (
-    <button onClick={props.onClick}>
-      {props.text}
+    <button onClick={onClick}>
+      {text}
     </button>
+  )
+}
+
+const Statistics = ({name, value}) => {
+  if (name === "positive") {
+    return(
+      <p>
+      {name} {value} %
+    </p>
+    )
+  }
+
+  return(
+    <p>
+      {name} {value}
+    </p>
   )
 }
 
@@ -26,8 +42,8 @@ function App() {
   const increaseBad = () => setBad(bad + 1)
   const increaseNeutral = () => setNeutral(neutral + 1)
   const total = good + bad + neutral
-  const average = (good - bad) / total
-  const positive = good / total * 100
+  const average = total === 0 ? 0 : (good - bad) / total
+  const positive = total === 0 ? 0 : (good / total) * 100
 
   return (
     <div>
@@ -36,12 +52,12 @@ function App() {
     <Button onClick={increaseNeutral} text='neutral' />
     <Button onClick={increaseBad} text='bad' />
     <Title title="statistics"/>
-    <p>good {good}</p>
-    <p>neutral {neutral}</p>
-    <p>bad {bad}</p>
-    <p>all {total}</p>
-    <p>average {average}</p>
-    <p>positive {positive} %</p>
+    <Statistics name="good" value={good} />
+    <Statistics name="neutral" value={neutral} />
+    <Statistics name="bad" value={bad} />
+    <Statistics name="all" value={total} />
+    <Statistics name="average" value={average} />
+    <Statistics name="positive" value={positive} />
     </div>
   )
 }
