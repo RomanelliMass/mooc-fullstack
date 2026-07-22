@@ -1,42 +1,65 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-const Title = ({title}) => {
-  return(
-      <h1> {title} </h1>
-  )
-}
+const Title = ({ title }) => {
+  return <h1> {title} </h1>;
+};
 
 const Button = ({ onClick, text }) => {
-  return (
-    <button onClick={onClick}> {text} </button>
-  )
-}
+  return <button onClick={onClick}> {text} </button>;
+};
 
-const Statistics = ({name, value}) => {
-  if (name === "positive") {
-    return(
-    <p> {name} {value} % </p>
-    )
+const Statistics = ({ clicks }) => {
+  const total = clicks.good + clicks.bad + clicks.neutral;
+  const average = total === 0 ? 0 : (clicks.good - clicks.bad) / total;
+  const positive = total === 0 ? 0 : (clicks.good / total) * 100;
+
+  if (total === 0) {
+    return <p>No Feedback Given</p>;
   }
 
-  return(
-    <p> {name} {value} </p>
-  )
-}
+  return (
+    <>
+      <StatisticLine name="good" value={clicks.good} />
+      <StatisticLine name="neutral" value={clicks.neutral} />
+      <StatisticLine name="bad" value={clicks.bad} />
+      <StatisticLine name="all" value={total} />
+      <StatisticLine name="average" value={average} />
+      <StatisticLine name="positive" value={positive} />
+    </>
+  );
+};
 
+const StatisticLine = ({ name, value }) => {
+  if (name === "positive") {
+    return (
+      <p>
+        {" "}
+        {name} {value} %{" "}
+      </p>
+    );
+  }
+
+  return (
+    <p>
+      {" "}
+      {name} {value}{" "}
+    </p>
+  );
+};
 
 function App() {
-const [clicks, setClicks] = useState({
-  good:0, bad:0, neutral:0
-})
+  const [clicks, setClicks] = useState({
+    good: 0,
+    bad: 0,
+    neutral: 0,
+  });
 
-  const increaseGood = () => setClicks({...clicks, good: clicks.good + 1})
-  const increaseBad = () => setClicks({...clicks, bad: clicks.bad + 1})
-  const increaseNeutral = () => setClicks({...clicks, neutral: clicks.neutral + 1})
+  const increaseGood = () => setClicks({ ...clicks, good: clicks.good + 1 });
 
-  const total = clicks.good + clicks.bad + clicks.neutral
-  const average = total === 0 ? 0 : (clicks.good - clicks.bad) / total
-  const positive = total === 0 ? 0 : (clicks.good / total) * 100
+  const increaseBad = () => setClicks({ ...clicks, bad: clicks.bad + 1 });
+
+  const increaseNeutral = () =>
+    setClicks({ ...clicks, neutral: clicks.neutral + 1 });
 
   return (
     <div>
@@ -45,20 +68,9 @@ const [clicks, setClicks] = useState({
       <Button onClick={increaseNeutral} text="neutral" />
       <Button onClick={increaseBad} text="bad" />
       <Title title="statistics" />
-      {total === 0 ? (
-        <p>No Feedback Given</p>
-      ) : (
-        <>
-        <Statistics name="good" value={clicks.good} />
-        <Statistics name="neutral" value={clicks.neutral} />
-        <Statistics name="bad" value={clicks.bad} />
-        <Statistics name="all" value={total} />
-        <Statistics name="average" value={average} />
-        <Statistics name="positive" value={positive} />
-        </>
-      )}
+      <Statistics clicks={clicks} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
