@@ -18,32 +18,34 @@ const Statistics = ({ clicks }) => {
   }
 
   return (
-    <>
-      <StatisticLine name="good" value={clicks.good} />
-      <StatisticLine name="neutral" value={clicks.neutral} />
-      <StatisticLine name="bad" value={clicks.bad} />
-      <StatisticLine name="all" value={total} />
-      <StatisticLine name="average" value={average} />
-      <StatisticLine name="positive" value={positive} />
-    </>
+    <table>
+      <tbody>
+        <StatisticLine name="good" value={clicks.good} />
+        <StatisticLine name="neutral" value={clicks.neutral} />
+        <StatisticLine name="bad" value={clicks.bad} />
+        <StatisticLine name="all" value={total} />
+        <StatisticLine name="average" value={average} />
+        <StatisticLine name="positive" value={positive} />
+      </tbody>
+    </table>
   );
 };
 
 const StatisticLine = ({ name, value }) => {
   if (name === "positive") {
     return (
-      <p>
-        {" "}
-        {name} {value} %{" "}
-      </p>
+      <tr>
+        <td>{name}</td>
+        <td>{value} %</td>
+      </tr>
     );
   }
 
   return (
-    <p>
-      {" "}
-      {name} {value}{" "}
-    </p>
+    <tr>
+      <td>{name}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 
